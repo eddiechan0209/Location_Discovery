@@ -1,0 +1,115 @@
+[[extend 'layout.html']]
+
+<style>
+	[v-cloak] {
+		display: none;
+	}
+</style>
+
+<div class="section has-background-light" id="vue-target" v-cloak>
+	<p class="title has-text-centered">Location Discovery</p>
+	<div v-if="add_mode" class="container block">
+		<div class="form">
+			<!-- This looks like a form, but is not.  We just need the inputs. -->
+			<div class="field">
+				<div class="control">
+					<textarea
+						class="textarea is-info"
+						placeholder="Write a post"
+						v-model="add_post_content"
+					></textarea>
+				</div>
+			</div>
+			<div class="field">
+				<div class="control">
+					<input
+						type="submit"
+						@click="add_contact"
+						value="Post"
+						class="button is-primary"
+					/>
+					<input
+						type="submit"
+						@click="set_add_status(false)"
+						value="Cancel"
+						class="button is-warning"
+					/>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container block">
+		<button
+			v-if="!add_mode && email!=null"
+			@click="set_add_status(true)"
+			class="block button is-primary"
+		>
+			<i class="fa fa-plus fa-fw"></i>
+		</button>
+
+		<div class="block" v-for="r in rows">
+			<div class="box has-background-info-light py-5">
+				<div class="content">
+					<p>
+						<td>{{r.post_content}}</td>
+
+						<br />
+						<p class='has-text-grey-light'	>{{r.name}}</p>
+					</p>
+				</div>
+
+				<nav class="level is-mobile">
+
+					<div class="level-left" @mouseout="hover_out(r._idx)">
+						<!-- <span >
+							<i v-if class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+							<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+						</span> -->
+							<a class="level-item" v-if="r.rating == 1" @click="set_rating(r._idx, 0)" @mouseover="hover_like(r._idx)" >
+								<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+							</a>
+							<a class="level-item" v-if="r.rating < 1" @click="set_rating(r._idx, 1)" @mouseover="hover_like(r._idx)" >
+								<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+							</a>
+
+							<a class="level-item" v-if="r.rating == -1" @click="set_rating(r._idx, 0)" @mouseover="hover_dislike(r._idx)" >
+								<i class="fa fa-thumbs-down" aria-hidden="true"></i>
+							</a>
+							<a class="level-item" v-if="r.rating > -1" @click="set_rating(r._idx, -1)" @mouseover="hover_dislike(r._idx)" >
+								<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+							</a>
+
+							<p>{{r.message}}</p>
+					</div>
+
+					<div v-if="r.email == email">
+						<div class="level-right">
+							<a class="level-item">
+								<i
+									@click="delete_contact(r._idx)"
+									class="fa fa-trash"
+									aria-hidden="true"
+									style="color: red"
+								></i>
+							</a>
+						</div>
+					</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+	let load_contacts_url = '[[=XML(load_contacts_url)]]';
+	let add_contact_url = '[[=XML(add_contact_url)]]';
+	let delete_contact_url = '[[=XML(delete_contact_url)]]';
+	let get_rating_url = "[[=XML(get_rating_url)]]";
+    let set_rating_url = "[[=XML(set_rating_url)]]";
+</script>
+<script src="js/index.js"></script>
+[[end]]
