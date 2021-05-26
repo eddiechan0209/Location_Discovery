@@ -38,14 +38,14 @@ url_signer = URLSigner(session)
 def index():
     return dict(
         # COMPLETE: return here any signed URLs you need.
-        my_callback_url = URL('my_callback', signer=url_signer),
-        load_contacts_url = URL('load_contacts', signer=url_signer),
-        add_contact_url = URL('add_contact', signer=url_signer),
-        delete_contact_url = URL('delete_contact', signer=url_signer),
-        get_rating_url = URL('get_rating', signer=url_signer),
-        set_rating_url = URL('set_rating', signer=url_signer),
-
-        email = get_user_email()
+        my_callback_url=URL('my_callback', signer=url_signer),
+        load_contacts_url=URL('load_contacts', signer=url_signer),
+        add_contact_url=URL('add_contact', signer=url_signer),
+        delete_contact_url=URL('delete_contact', signer=url_signer),
+        get_rating_url=URL('get_rating', signer=url_signer),
+        set_rating_url=URL('set_rating', signer=url_signer),
+        upload_image_url=URL('upload_image', signer=url_signer),
+        email=get_user_email()
     )
 
 # This is our very first API function.
@@ -104,3 +104,15 @@ def set_rating():
         rating=rating
     )
     return "ok" # Just to have some confirmation in the Network tab.
+
+@action('upload_image', method="POST")
+@action.uses(url_signer.verify(), db)
+def upload_image():
+    post_id = request.json.get('post_id')
+    image = request.json.get('image')
+    db.contact.update_or_insert(
+        db(db.contact.id == post_id),
+        image=image,
+                                )
+    return "ok"
+

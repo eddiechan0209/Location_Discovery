@@ -29,7 +29,9 @@ def get_time():
 db.define_table('contact',
                 Field('post_content'),
                 Field('name'),
-                Field('email'),)
+                Field('email'),
+                Field('image', 'text')
+                )
 
 db.define_table('thumbs',
                 Field('contact', 'reference contact'),
