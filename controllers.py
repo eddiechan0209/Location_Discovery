@@ -48,13 +48,25 @@ def index():
         email=get_user_email()
     )
 
+@action('profile')
+@action.uses(db, 'profile.html')
+def profile():
+    return dict(
+        name = get_user_name(),
+        email = get_user_email(),
+        rows = db(db.contact.email == get_user_email()).select().as_list()    
+    )
+
+@action('')
+
 # This is our very first API function.
 @action('load_contacts')
 @action.uses(url_signer.verify(), db)
 def load_contacts():
     rows = db(db.contact).select().as_list()
     email = get_user_email()
-    print(rows)
+    # print(rows)
+    rows.reverse()
     return dict(rows=rows, email=email)
 
 @action('add_contact', method="POST")
@@ -95,7 +107,7 @@ def set_rating():
     """Sets the rating for an image."""
     post_id = request.json.get('post_id')
     rating = request.json.get('rating')
-    print("post_id: " + str(post_id) + ", rating: " + str(rating))
+    # print("post_id: " + str(post_id) + ", rating: " + str(rating))
     assert post_id is not None and rating is not None
     db.thumbs.update_or_insert(
         ((db.thumbs.contact == post_id) & (db.thumbs.rater == get_user())),
@@ -110,9 +122,7 @@ def set_rating():
 def upload_image():
     post_id = request.json.get('post_id')
     image = request.json.get('image')
-    db.contact.update_or_insert(
-        db(db.contact.id == post_id),
-        image=image,
-                                )
+    db(db.contact.id == post_id).update(image=image)
     return "ok"
+
 

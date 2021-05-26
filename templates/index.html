@@ -28,19 +28,14 @@
 						value="Post"
 						class="button is-primary"
 					/>
+
 					<input
 						type="submit"
 						@click="set_add_status(false)"
 						value="Cancel"
 						class="button is-warning"
 					/>
-					 <input class="file-input" type="file"
-								 accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
-								 @change="upload_file($event, r._idx)"
-					 			 value="Upload Photo"
-								 class="button is-primary"/>
-
-
+		
 				</div>
 			</div>
 		</div>
@@ -92,21 +87,21 @@
 
 
 
-					<div v-if="!r.image" class="field has-addons block">
-					<p class="control">
-					  <div class="file is-info">
-						<label class="file-label">
-						  <input class="file-input" type="file"
-								 accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
-								 @change="upload_file($event, r._idx)">
-						  <span class="file-cta">
-							<span class="file-label">
-							  <span>Add image</span>
-							</span>
-						  </span>
-						</label>
-					  </div>
-					</p>
+					<div v-if="!r.image && r.email == email" class="field has-addons block">
+						<p class="control">
+							<div class="file is-info">
+								<label class="file-label">
+								<input class="file-input" type="file"
+										accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
+										@change="upload_file($event, r._idx)">
+								<span class="file-cta">
+									<span class="file-label">
+									<span>Add image</span>
+									</span>
+								</span>
+								</label>
+							</div>
+						</p>
 				  </div>
 
 				 <img v-if="r.image" width="400" :src="r.image"/>

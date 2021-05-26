@@ -37,5 +37,11 @@ db.define_table('thumbs',
                 Field('contact', 'reference contact'),
                 Field('rating', 'integer', default=0),
                 Field('rater', 'reference auth_user', default=get_user),)
+
+db.define_table('profile_info',
+                Field('user_id', 'reference user'),
+                Field('Bio'),
+                Field('Favorite'),
+)
                 
 db.commit()

@@ -12,10 +12,10 @@ let init = (app) => {
 		rows: [],
 		email: '',
 		selection_done: false,
-        uploading: false,
-        uploaded_file: "",
-        uploaded: false,
-        img_url: "",
+		uploading: false,
+		uploaded_file: '',
+		uploaded: false,
+		img_url: '',
 	};
 
 	app.enumerate = (a) => {
@@ -124,29 +124,27 @@ let init = (app) => {
 		post.message = '';
 	};
 
-
-     app.upload_file = function (event, row_idx) {
-        let input = event.target;
-        let file = input.files[0];
-        let row = app.vue.rows[row_idx];
-        if (file){
-            let reader = new FileReader();
-            reader.addEventListener("load", function(){
-               //sends the image to the server
-               axios.post(upload_image_url,
-               {
-                    contact_id: row.id,
-                    image: reader.result,
-               })
-               .then(function(){
-                 //Sets the local preview.
-               row.image = reader.result;
-               });
-            });
-            reader.readAsDataURL(file);
-        }
-    };
-
+	app.upload_file = function (event, row_idx) {
+		let input = event.target;
+		let file = input.files[0];
+		let row = app.vue.rows[row_idx];
+		if (file) {
+			let reader = new FileReader();
+			reader.addEventListener('load', function () {
+				//sends the image to the server
+				axios
+					.post(upload_image_url, {
+						post_id: row.id,
+						image: reader.result,
+					})
+					.then(function () {
+						//Sets the local preview.
+						row.image = reader.result;
+					});
+			});
+			reader.readAsDataURL(file);
+		}
+	};
 
 	// We form the dictionary of all methods, so we can assign them
 	// to the Vue app in a single blow.
@@ -158,7 +156,7 @@ let init = (app) => {
 		hover_like: app.hover_like,
 		hover_dislike: app.hover_dislike,
 		hover_out: app.hover_out,
-        upload_file: app.upload_file,
+		upload_file: app.upload_file,
 	};
 
 	// This creates the Vue instance.

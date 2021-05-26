@@ -1,0 +1,95 @@
+[[extend 'layout.html']]
+
+<style>
+	[v-cloak] {
+		display: none;
+	}
+</style>
+
+<div class="section has-background-light" id="vue-target" v-cloak>
+    <p class="title has-text-centered">[[=name]]</p>
+    <div v-if="r.email == email">
+        <!-- need to write js for editing profile_info table-->
+        <div class buttons-is-centered>        
+            <a class="button is-info fa fa-pencil" @click="" aria-hidden="true">Edit Bio<a>
+        </div<
+        <div class buttons-is-centered>        
+            <a class="button is-info fa fa-pencil" @click="" aria-hidden="true">Edit Favorite Place<a>
+        </div<
+    </div>
+</div>
+
+<div class="block" v-for="r in rows">
+    <div class="box has-background-info-light py-5">
+        <div class="content">
+            <p>
+                <td>{{r.post_content}}</td>
+
+                <br />
+                <p class='has-text-grey-light'	>{{r.name}}</p>
+            </p>
+        </div>
+
+        <nav class="level is-mobile">
+
+            <div class="level-left" @mouseout="hover_out(r._idx)">
+                <!-- <span >
+                    <i v-if class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                    <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                </span> -->
+                    <a class="level-item" v-if="r.rating == 1" @click="set_rating(r._idx, 0)" @mouseover="hover_like(r._idx)" >
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    </a>
+                    <a class="level-item" v-if="r.rating < 1" @click="set_rating(r._idx, 1)" @mouseover="hover_like(r._idx)" >
+                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                    </a>
+
+                    <a class="level-item" v-if="r.rating == -1" @click="set_rating(r._idx, 0)" @mouseover="hover_dislike(r._idx)" >
+                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                    </a>
+                    <a class="level-item" v-if="r.rating > -1" @click="set_rating(r._idx, -1)" @mouseover="hover_dislike(r._idx)" >
+                        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                    </a>
+
+                    <p>{{r.message}}</p>
+            </div>
+
+
+
+            <div v-if="!r.image" class="field has-addons block">
+            <p class="control">
+              <div class="file is-info">
+                <label class="file-label">
+                  <input class="file-input" type="file"
+                         accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
+                         @change="upload_file($event, r._idx)">
+                  <span class="file-cta">
+                    <span class="file-label">
+                      <span>Add image</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </p>
+          </div>
+
+         <img v-if="r.image" width="400" :src="r.image"/>
+
+
+
+            <div v-if="r.email == email">
+                <div class="level-right">
+                    <a class="level-item">
+                        <i
+                            @click="delete_contact(r._idx)"
+                            class="fa fa-trash"
+                            aria-hidden="true"
+                            style="color: red"
+                        ></i>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </nav>
+    </div>
+</div>
