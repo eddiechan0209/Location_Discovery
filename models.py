@@ -26,6 +26,16 @@ def get_time():
 #
 ## always commit your models to avoid problems later
 
+db.define_table('upload',
+                Field('owner', default=get_user_email),
+                Field('file_name'),
+                Field('file_type'),
+                Field('file_date'),
+                Field('file_path'),
+                Field('file_size', 'integer'),
+                Field('confirmed', 'boolean', default=False), # Was the upload to GCS confirmed?
+                )
+
 db.define_table('contact',
                 Field('post_content'),
                 Field('name'),
@@ -38,10 +48,10 @@ db.define_table('thumbs',
                 Field('rating', 'integer', default=0),
                 Field('rater', 'reference auth_user', default=get_user),)
 
-db.define_table('profile_info',
-                Field('user_id', 'reference user'),
-                Field('Bio'),
-                Field('Favorite'),
-)
+# db.define_table('profile_info',
+#                 Field('user_id', 'reference user'),
+#                 Field('Bio'),
+#                 Field('Favorite'),
+# )
                 
 db.commit()
