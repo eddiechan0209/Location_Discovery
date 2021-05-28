@@ -58,7 +58,7 @@ gcs = NQGCS(json_key_path=GCS_KEY_PATH)
 def map():
 
     return dict()
-    
+
 @action('index')
 @action.uses(db, auth, 'index.html')
 def index():
@@ -70,7 +70,6 @@ def index():
         delete_contact_url=URL('delete_contact', signer=url_signer),
         get_rating_url=URL('get_rating', signer=url_signer),
         set_rating_url=URL('set_rating', signer=url_signer),
-        upload_image_url=URL('upload_image', signer=url_signer),
         email=get_user_email(),
 
         file_info_url = URL('file_info', signer=url_signer),
@@ -149,6 +148,7 @@ def notify_upload():
     file_name = request.json.get("file_name")
     file_path = request.json.get("file_path")
     file_size = request.json.get("file_size")
+    post_id = request.json.get("post_id")
     print("File was uploaded:", file_path, file_name, file_type)
     # Deletes any previous file.
     rows = db(db.upload.owner == get_user_email()).select()
@@ -168,17 +168,24 @@ def notify_upload():
         file_size=file_size,
         confirmed=True,
     )
+    file_url = "https://storage.googleapis.com/post_image_uploads/" + file_path.split(BUCKET + "/",1)[1] 
+
+    db(db.contact.id == post_id).update(image_url=file_url)
     # Returns the file information.
     return dict(
         download_url=gcs_url(GCS_KEYS, file_path, verb='GET'),
         file_date=d,
+        file_url=file_url,
     )
 
 @action('notify_delete', method="POST")
 @action.uses(url_signer.verify(), db)
 def notify_delete():
     file_path = request.json.get("file_path")
+    post_id = request.json.get("post_id")
     # We check that the owner matches to prevent DDOS.
+    db(db.contact.id == post_id).update(image_url=None)
+
     db((db.upload.owner == get_user_email()) &
        (db.upload.file_path == file_path)).delete()
     return dict()
@@ -279,12 +286,12 @@ def set_rating():
     )
     return "ok" # Just to have some confirmation in the Network tab.
 
-@action('upload_image', method="POST")
-@action.uses(url_signer.verify(), db)
-def upload_image():
-    post_id = request.json.get('post_id')
-    image = request.json.get('image')
-    db(db.contact.id == post_id).update(image=image)
-    return "ok"
+# @action('upload_image', method="POST")
+# @action.uses(url_signer.verify(), db)
+# def upload_image():
+#     post_id = request.json.get('post_id')
+#     image = request.json.get('image')
+#     db(db.contact.id == post_id).update(image=image)
+#     return "ok"
 
 

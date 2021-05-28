@@ -87,7 +87,7 @@
 
 
 
-					<div v-if="!r.image && r.email == email" class="field has-addons block">
+					<div v-if="!r.image_url && r.email == email" class="field has-addons block">
 						<p class="control">
 							<div class="file is-info">
 								<label class="file-label">
@@ -104,7 +104,7 @@
 						</p>
 				  </div>
 
-				 <img v-if="r.image" width="400" :src="r.image"/>
+				 <img v-if="r.image_url" width="400" :src="r.image_url"/>
 
 
 
@@ -136,7 +136,10 @@
 	let delete_contact_url = '[[=XML(delete_contact_url)]]';
 	let get_rating_url = "[[=XML(get_rating_url)]]";
     let set_rating_url = "[[=XML(set_rating_url)]]";
-    let upload_image_url = "[[=XML(upload_image_url)]]";
+	let file_info_url = "[[=XML(file_info_url)]]";
+	let obtain_gcs_url = "[[=XML(obtain_gcs_url)]]";
+	let notify_url = "[[=XML(notify_url)]]";
+	let delete_url = "[[=XML(delete_url)]]";
 </script>
 <script src="js/index.js"></script>
 [[end]]

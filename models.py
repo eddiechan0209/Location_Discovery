@@ -40,7 +40,7 @@ db.define_table('contact',
                 Field('post_content'),
                 Field('name'),
                 Field('email'),
-                Field('image', 'text')
+                Field('image_url')
                 )
 
 db.define_table('thumbs',
