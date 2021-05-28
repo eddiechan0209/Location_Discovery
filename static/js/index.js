@@ -110,18 +110,69 @@ let init = (app) => {
 	};
 
 	app.hover_like = (post_idx) => {
-		let post = app.vue.images[post_idx];
-		post.message = 'LIKED BY THING';
+		axios
+			.get(get_likes_url, { params: { post_id: app.vue.rows[post_idx].id } })
+			.then(function (response) {
+				let names = response.data.names;
+				let message = '';
+				switch (names.length) {
+					case 0:
+						message = 'Not liked by anyone';
+						break;
+					case 1:
+						message = 'Liked by ' + names;
+						break;
+					case 2:
+						message = 'Liked by ' + names[0] + ' and ' + names[1];
+						break;
+					default:
+						message =
+							'Liked by ' +
+							names.slice(0, -1).join(', ') +
+							', and ' +
+							names.slice(-1);
+				}
+				console.log(message);
+				const post = app.vue.rows[post_idx];
+				post.message = message;
+				app.vue.rows[post_idx].message = message;
+			});
 	};
 
 	app.hover_dislike = (post_idx) => {
-		let post = app.vue.images[post_idx];
-		post.message = 'DISLIKED BY THING';
+		axios
+			.get(get_dislikes_url, { params: { post_id: app.vue.rows[post_idx].id } })
+			.then(function (response) {
+				let names = response.data.names;
+				let message = '';
+				switch (names.length) {
+					case 0:
+						message = 'Not disliked by anyone';
+						break;
+					case 1:
+						message = 'Disiked by ' + names;
+						break;
+					case 2:
+						message = 'Disiked by ' + names[0] + ' and ' + names[1];
+						break;
+					default:
+						message =
+							'Disiked by ' +
+							names.slice(0, -1).join(', ') +
+							', and ' +
+							names.slice(-1);
+				}
+				console.log(message);
+				const post = app.vue.rows[post_idx];
+				post.message = message;
+				app.vue.rows[post_idx].message = message;
+			});
 	};
 
 	app.hover_out = (post_idx) => {
-		let post = app.vue.images[post_idx];
+		let post = app.vue.rows[post_idx];
 		post.message = '';
+		app.vue.rows[post_idx].message = '';
 	};
 
 	app.upload_file = function (event, row_idx) {

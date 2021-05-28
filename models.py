@@ -46,7 +46,10 @@ db.define_table('contact',
 db.define_table('thumbs',
                 Field('contact', 'reference contact'),
                 Field('rating', 'integer', default=0),
-                Field('rater', 'reference auth_user', default=get_user),)
+                Field('rater', 'reference auth_user', default=get_user),
+                Field('rater_name'),)
+
+
 
 # db.define_table('profile_info',
 #                 Field('user_id', 'reference user'),

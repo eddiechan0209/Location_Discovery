@@ -61,9 +61,11 @@
 					</p>
 				</div>
 
+				
 				<nav class="level is-mobile">
 
 					<div class="level-left" @mouseout="hover_out(r._idx)">
+						<p class="is-info"># of likers placeholder&nbsp;&nbsp;</p><p></p>
 						<!-- <span >
 							<i v-if class="fa fa-thumbs-o-up" aria-hidden="true"></i>
 							<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
@@ -84,6 +86,7 @@
 
 							<p>{{r.message}}</p>
 					</div>
+					
 
 
 
@@ -137,6 +140,8 @@
 	let get_rating_url = "[[=XML(get_rating_url)]]";
     let set_rating_url = "[[=XML(set_rating_url)]]";
     let upload_image_url = "[[=XML(upload_image_url)]]";
+    let get_likes_url = "[[=XML(get_likes_url)]]";
+    let get_dislikes_url = "[[=XML(get_dislikes_url)]]";
 </script>
 <script src="js/index.js"></script>
 [[end]]
